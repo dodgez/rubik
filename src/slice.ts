@@ -8,25 +8,27 @@ export default class Slice {
   }
 
   rotate(clockwise: boolean = true) {
-    let rotated_pieces = this.pieces.map(slice => slice.map(piece => piece));
+    let rotated_pieces: number[][] = this.pieces.map(s => s.slice());
 
-    for (let x = 0; x < this.size; ++x) {
-      for (let y = 0; y < this.size; ++y) {
+    for (let x: number = 0; x < this.size; ++x) {
+      for (let y: number = 0; y < this.size; ++y) {
         if (clockwise) {
-          rotated_pieces[y][this.size-x] = this.pieces[x][y];
+          rotated_pieces[y][this.size-x-1] = this.pieces[x][y];
         } else {
-          rotated_pieces[this.size-y][x] = this.pieces[x][y];
+          rotated_pieces[this.size-y-1][x] = this.pieces[x][y];
         }
       }
     }
 
     this.pieces = rotated_pieces;
+
+    return this;
   }
 
   isSolved(buffer: number = 0) {
-    let sum = 0;
-    for (let x = buffer; x < this.size - buffer; ++x) {
-      for (let y = buffer; y < this.size - buffer; ++y) {
+    let sum: number = 0;
+    for (let x: number = buffer; x < this.size - buffer; ++x) {
+      for (let y: number = buffer; y < this.size - buffer; ++y) {
         sum += this.pieces[x][y];
       }
     }
@@ -35,8 +37,8 @@ export default class Slice {
   }
 
   fill(pattern: number, buffer: number = 0) {
-    for (let x = buffer; x < this.size - buffer; ++x) {
-      for (let y = buffer; y < this.size - buffer; ++y) {
+    for (let x: number = buffer; x < this.size - buffer; ++x) {
+      for (let y: number = buffer; y < this.size - buffer; ++y) {
         this.pieces[x][y] = pattern;
       }
     }
