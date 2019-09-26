@@ -19,7 +19,7 @@ export default class Cube {
     }
   }
 
-  getSlice(i: number, side: string) {
+  getSlice(side: string, i: number = 0) {
     i = (this.doesSideNeedIndexFix(side) ? this.size - 1 - i : i);
 
     if (side === 'f' || side === 'b') {
@@ -33,7 +33,7 @@ export default class Cube {
     }
   }
 
-  setSlice(slice: Slice, i: number, side: string) {
+  setSlice(slice: Slice, side: string, i: number = 0) {
     let pieces: number[][] = slice.pieces;
     i = (this.doesSideNeedIndexFix(side) ? this.size - 1 - i : i);
 
@@ -51,9 +51,17 @@ export default class Cube {
   }
 
   rotateSide(side: string, clockwise: boolean = true) {
-    // Rotate the face and then the corners/edges
-    this.setSlice(this.getSlice(0, side).rotate(this.doesSideNeedIndexFix(side) ? !clockwise : clockwise), 0, side);
-    this.setSlice(this.getSlice(1, side).rotate(this.doesSideNeedIndexFix(side) ? !clockwise : clockwise), 1, side);
+    // Rotate the face
+    this.rotateLayer(side, {clockwise: clockwise});
+
+    // Rotate the edges and corners
+    this.rotateLayer(side, {i: 1, clockwise: clockwise});
+  }
+  rotateLayer(side: string, options: {i?: number, clockwise?: boolean} = {i: 0, clockwise: true}) {
+    this.setSlice(
+      this.getSlice(side, options.i).rotate(this.doesSideNeedIndexFix(side) ? !options.clockwise : options.clockwise),
+      side,
+      options.i);
   }
 
   doesSideNeedIndexFix(side: string) {
