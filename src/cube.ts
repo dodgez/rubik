@@ -88,30 +88,44 @@ export default class Cube {
     return true;
   }
 
-  solve(moves: string[] = []) {
-    if (this.isSolved()) return moves;
+  scramble(options: {max_moves: number} = {max_moves: 5}) {
+    let moves = [];
+
+    for (let i = 0; i < options.max_moves; ++i) {
+      let side = Math.floor(Math.random() * 6);
+      this.rotateSide('fbrlud'[side]);
+      moves.push('fbrlud'[side]);
+    }
+
+    return moves;
+  }
+
+  solve(options: {max_moves: number, moves?: string[]} = {max_moves: 10, moves: []}) {
+    if (!options.moves) options.moves = [];
+    if (options.moves.length == 3) console.log(options.moves);
+    if (this.isSolved()) return options.moves;
   
-    if (moves.length <= 6) {
+    if (options.moves.length <= options.max_moves) {
       for (let side of 'fFbBrRlLuUdD') {
-        if (moves.length >= 1) {
-          if (side != moves[moves.length - 1] && side.toLowerCase() == moves[moves.length - 1].toLowerCase()) {
+        if (options.moves.length >= 1) {
+          if (side != options.moves[options.moves.length - 1] && side.toLowerCase() == options.moves[options.moves.length - 1].toLowerCase()) {
             continue;
           }
   
-          if (moves.length >= 2) {
-            if (side == moves[moves.length - 1] && side == moves[moves.length - 2]) {
+          if (options.moves.length >= 2) {
+            if (side == options.moves[options.moves.length - 1] && side == options.moves[options.moves.length - 2]) {
               continue;
             }
           }
         }
-        moves.push(side);
+        options.moves.push(side);
         this.rotateSide(side);
   
-        let result = this.solve(moves);
+        let result = this.solve(options);
         if (result) return result;
         
         this.rotateSide(side, false);
-        moves.pop();
+        options.moves.pop();
       }
     }
     return false;
