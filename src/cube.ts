@@ -87,4 +87,33 @@ export default class Cube {
     }
     return true;
   }
+
+  solve(moves: string[] = []) {
+    if (this.isSolved()) return moves;
+  
+    if (moves.length <= 6) {
+      for (let side of 'fFbBrRlLuUdD') {
+        if (moves.length >= 1) {
+          if (side != moves[moves.length - 1] && side.toLowerCase() == moves[moves.length - 1].toLowerCase()) {
+            continue;
+          }
+  
+          if (moves.length >= 2) {
+            if (side == moves[moves.length - 1] && side == moves[moves.length - 2]) {
+              continue;
+            }
+          }
+        }
+        moves.push(side);
+        this.rotateSide(side);
+  
+        let result = this.solve(moves);
+        if (result) return result;
+        
+        this.rotateSide(side, false);
+        moves.pop();
+      }
+    }
+    return false;
+  }
 }
