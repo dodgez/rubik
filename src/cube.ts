@@ -73,4 +73,13 @@ export default class Cube {
   doesSideNeedIndexFix(side: string) {
     return side === 'b' || side === 'l' || side === 'd';
   }
+
+  isSolved() {
+    for (let side of 'fbrlud') {
+      if (!this.getSlice(side).isSolved(1)) {
+        return false;
+      }
+    }
+    return true;
+  }
 }
