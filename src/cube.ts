@@ -57,6 +57,11 @@ export default class Cube {
   }
 
   rotateSide(side: string, clockwise: boolean = true) {
+    if (side.match(/[A-Z]/)) {
+      side = side.toLowerCase();
+      clockwise = !clockwise;
+    }
+
     // Rotate the face
     this.rotateLayer(side, {clockwise: clockwise});
 
