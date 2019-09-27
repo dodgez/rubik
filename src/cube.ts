@@ -31,9 +31,9 @@ export default class Cube {
     if (side === 'f' || side === 'b') {
       return new Slice(this.cubes[i].slice())
     } else if (side === 'r' || side === 'l') {
-      return new Slice(this.cubes.map(s => s[i]))
-    } else if (side === 'u' || side === 'd') {
       return new Slice(this.cubes.map(s => s.map(sl => sl[i])));
+    } else if (side === 'u' || side === 'd') {
+      return new Slice(this.cubes.map(s => s[i]))
     } else {
       return null;
     }
@@ -50,7 +50,7 @@ export default class Cube {
         } else if (side === 'r' || side === 'l') {
           this.cubes[j][k][i] = pieces[j][k];
         } else if (side === 'u' || side === 'd') {
-          this.cubes[k][i][j] = pieces[j][k];
+          this.cubes[j][i][k] = pieces[j][k];
         }
       }
     }
