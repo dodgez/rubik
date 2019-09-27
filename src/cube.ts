@@ -13,9 +13,15 @@ export default class Cube {
       for (let y: number = 0; y < size; ++y) {
         this.cubes[x].push([]);
         for (let z: number = 0; z < size; ++z) {
-          this.cubes[x][y].push(x + 10*y + 100*z);
+          this.cubes[x][y].push(0);
         }
       }
+    }
+
+    for (let i = 0; i < 6; ++i) {
+      let side = new Slice([[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0]]); 
+      side.fill(10**i, 1);
+      this.setSlice(side, 'fbrlud'[i]);
     }
   }
 
